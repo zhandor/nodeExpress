@@ -1,8 +1,8 @@
 import Express from "express";
 
-import products from "./products.js";
-import exeQuery from "./db_MySQL.js";
-import {findAll} from "./medicamento.js";
+import products from "./outros/products.js";
+import exeQuery from "./outros/db_MySQL.js";
+import {findAll} from "./models/medicamento.js";
 
 const app = Express();
 const port = 3000;
