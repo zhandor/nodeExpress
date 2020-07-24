@@ -20,14 +20,14 @@ const Medicamento = Connection.define('medicamento',  {
         type: DataTypes.STRING,
         allowNull: false
     },
-    laboratorio: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'laboratorio',
-            key: 'id'
-        }
-    },
+    // laboratorio: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: 'laboratorio',
+    //         key: 'id'
+    //     }
+    // },
     forma: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -41,9 +41,13 @@ const Medicamento = Connection.define('medicamento',  {
     timestamps: false
 });
 
-// Medicamento.belongsTo(Laboratorio, {
-//     as: 'lab'
-// });
+Medicamento.belongsTo(
+    Laboratorio,
+    { 
+    foreignKey: { name: 'laboratorio' },
+    as: 'lab', // Appropriate name
+    },
+);
 
 function syncTable(){
     Medicamento.sync().then((result)=>{
@@ -58,7 +62,7 @@ function syncTable(){
 function findAll(req, res){
     Medicamento.findAll({
         include: [
-           { model: Laboratorio, required: true}
+           { model: Laboratorio, as: "lab", required: true}
         ]
       }).then((result)=>{
         console.log("Foi, result: ",result);
