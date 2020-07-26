@@ -1,7 +1,7 @@
 import Connection from "./connection.js";
 import DataTypes from "sequelize";
 
-const Forma = Connection.define('forma_farmaceutica',  {
+const Forma = Connection.define('forma',  {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,9 +12,11 @@ const Forma = Connection.define('forma_farmaceutica',  {
         allowNull: false
     }
 },{
+    tableName: 'forma_farmaceutica',
     freezeTableName: true,
     timestamps: false
 });
+
 
 function syncTable(){
     Medicamento.sync().then((result)=>{
