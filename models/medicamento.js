@@ -1,6 +1,7 @@
 import Connection from "./connection.js";
 import DataTypes from "sequelize";
-import {Laboratorio} from "./laboratorio.js";
+import { Laboratorio } from "./laboratorio.js";
+import { Forma } from "./forma.js";
 
 const Medicamento = Connection.define('medicamento',  {
     id: {
@@ -28,10 +29,10 @@ const Medicamento = Connection.define('medicamento',  {
     //         key: 'id'
     //     }
     // },
-    forma: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
+    // forma: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false
+    // },
     generico: {
         type: DataTypes.BOOLEAN,
         allowNull: false
@@ -49,6 +50,14 @@ Medicamento.belongsTo(
     },
 );
 
+Medicamento.belongsTo(
+    Forma,
+    { 
+    foreignKey: { name: 'forma' },
+    as: 'frm', // Appropriate name
+    },
+);
+
 function syncTable(){
     Medicamento.sync().then((result)=>{
         console.log("synched");
@@ -62,7 +71,8 @@ function syncTable(){
 function findAll(req, res){
     Medicamento.findAll({
         include: [
-           { model: Laboratorio, as: "lab", required: true}
+           { model: Laboratorio, as: "lab", required: true}, 
+           { model: Forma, as: "frm", required: true}, 
         ]
       }).then((result)=>{
         console.log("Foi, result: ",result);
