@@ -1,4 +1,5 @@
 import Connection from "./connection.js";
+import Sequelize from "sequelize";
 import DataTypes from "sequelize";
 import { Laboratorio } from "./laboratorio.js";
 import { Forma } from "./forma.js";
@@ -82,4 +83,38 @@ function findAll(req, res){
     });
 }
 
-export {findAll, syncTable};
+function findAllByNome(req, res){
+    Medicamento.findAll({
+        include: [
+           { model: Laboratorio, as: "lab", required: true}, 
+           { model: Forma, as: "frm", required: true}, 
+        ],
+        where: {
+            nome_comercial: {[Sequelize.Op.substring]: req.params.nome}
+        }
+      }).then((result)=>{
+        console.log("Foi, result: ",result);
+        res.send(result);
+    }, (result)=>{
+        console.log("Não foi, result", result);
+    });
+}
+
+function findAllByPrincipio(req, res){
+    Medicamento.findAll({
+        include: [
+           { model: Laboratorio, as: "lab", required: true}, 
+           { model: Forma, as: "frm", required: true}, 
+        ],
+        where: {
+            composicao: {[Sequelize.Op.substring]: req.params.nome}
+        }
+      }).then((result)=>{
+        console.log("Foi, result: ",result);
+        res.send(result);
+    }, (result)=>{
+        console.log("Não foi, result", result);
+    });
+}
+
+export {findAll, syncTable, findAllByNome, findAllByPrincipio};
